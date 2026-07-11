@@ -1,0 +1,20 @@
+:root {
+    /* BACKGROUND */
+    --bg: #0F0F10;
+    --surface: #17171A;
+    --panel: #222226;
+    /* TEXT */
+    --text: #F5F5F5;
+    --muted: #A1A1AA;
+    /* ACCENTS */
+    --accent: #FF4D6D;      /* primary action / highlight */
+    --accent-soft: #FF8FA3; /* hover / secondary */
+    /* AUDIO UI */
+    --wave-base: #3F3F46;
+    --wave-played: #D4D4D8;
+    --playhead: #FF4D6D;
+    /* STATES */
+    --success: #22C55E;
+    --warning: #FACC15;
+    --danger: #EF4444;
+}

@@ -1,0 +1,103 @@
+@import "colors.css";
+
+.record-controls {
+    width: 100%;
+}
+
+
+.input-select-wrapper {
+    position: relative;
+}
+
+
+.audio-input-select {
+
+    appearance: none;
+
+    background: var(--panel);
+    color: var(--text);
+
+    border: 1px solid var(--wave-base);
+    border-radius: 999px;
+
+    padding: .6rem 2.2rem .6rem 1rem;
+
+    font-size: .9rem;
+
+    cursor: pointer;
+
+    outline: none;
+
+    transition: .2s ease;
+}
+
+
+.audio-input-select:hover {
+    border-color: var(--accent);
+}
+
+
+.audio-input-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(255,77,109,.15);
+}
+
+
+/* freccia custom */
+.input-select-wrapper::after {
+
+    content: "⌄";
+
+    position: absolute;
+
+    right: .8rem;
+    top: 50%;
+
+    transform: translateY(-55%);
+
+    color: var(--muted);
+
+    pointer-events: none;
+}
+
+
+
+.record-btn {
+
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+
+    background: var(--accent);
+
+    color: white;
+
+    border: none;
+    border-radius: 999px;
+
+    padding: .6rem 1.3rem;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+
+.record-btn:hover {
+    background: var(--accent-soft);
+}
+
+
+
+.record-dot {
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: white;
+}
