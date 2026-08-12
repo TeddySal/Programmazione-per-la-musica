@@ -1,0 +1,557 @@
+@import "colors.css";
+
+* {
+    font-family: "JetBrains Mono", monospace;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+.jumbo-card {
+    background: var(--surface);
+    width: 420px;   
+    border: 1px solid rgba(255,255,255,0.04);   
+    backdrop-filter: blur(10px);    
+    transition: 0.3s ease;
+}
+
+.jumbo-card:hover {
+    transform: translateY(-5px);    
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* Overlay nascosto di default */
+.drop-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Sta sopra a tutto */
+    opacity: 0;
+    pointer-events: none; /* Non blocca i click quando è nascosto */
+    transition: opacity 0.2s ease;
+}
+
+/* Mostrato quando l'utente sta trascinando un file */
+.drop-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.overlay-content {
+    padding: 30px 50px;
+    border: 3px dashed var(--accent);
+    border-radius: 16px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.bi-box-arrow-in-down {
+    color: var(--muted) !important;
+    cursor: pointer;
+}
+
+.record-btn {
+    transition: 0.2s ease;
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.record-btn:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft);
+}
+
+.return {
+    background-color: var(--surface);
+    border-radius: 18px;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.04);
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-danger:hover {
+    background-color: var(--accent-soft);
+    border-color: var(--accent-soft);
+}
+
+.audio-container {
+    width: 100%;            
+    max-width: 700px;        
+    box-sizing: border-box;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 18px;
+    overflow: hidden;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.audio-container.is-active {
+    border-color: var(--accent);
+}
+
+/* HEADER */
+.track-title {
+  color: var(--text);
+}
+
+.track-type {
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.audio-container small {
+  color: var(--muted);
+}
+
+/* WAVEFORM */
+#waveform svg {
+  width: 100%;
+  height: 120px;
+  display: block;
+}
+
+.foot {
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: 18px;
+}
+
+.effect, .volume {
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 8px 12px;
+    background: var(--surface);
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.effect-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.effect-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Colore base degli elementi SVG dell'icona (SPENTO) */
+.effect-icon svg path,
+.effect-icon svg rect,
+.effect-icon svg line,
+.effect-icon svg circle {
+    transition: fill 0.2s ease, stroke 0.2s ease, opacity 0.2s ease;
+    opacity: 0.6;
+    fill: var(--muted);
+    stroke: var(--muted);
+}
+
+/* Testo dell'etichetta */
+.effect-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: color 0.2s ease;
+}
+
+/* CONTROLS */
+.btn-control {
+    color: var(--muted);
+    display: flex;
+    gap: 8px; /* Aumentato leggermente per dare respiro tra icona e testo */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* === STATO HOVER === */
+.btn-control:hover {
+    color: var(--text);
+    background: var(--panel);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-control:hover .effect-label {
+    color: var(--text);
+}
+
+.btn-control:hover .effect-icon svg path,
+.btn-control:hover .effect-icon svg rect,
+.btn-control:hover .effect-icon svg line,
+.btn-control:hover .effect-icon svg circle {
+    opacity: 0.9;
+    fill: var(--text);
+    stroke: var(--text);
+}
+
+/* === STATO ATTIVO (QUANDO L'EFFETTO È ACCESO) === */
+.effect.active, .volume.active {
+    background: rgba(255, 77, 109, 0.1); /* Sfondo opaco basato su --accent */
+    border-color: var(--accent);
+}
+
+.effect.active .effect-label {
+    color: var(--accent);
+}
+
+/* L'icona SVG si illumina con la variabile --accent */
+.effect.active .effect-icon svg path,
+.effect.active .effect-icon svg rect,
+.effect.active .effect-icon svg line,
+.effect.active .effect-icon svg circle {
+    opacity: 1;
+    fill: var(--accent);
+    stroke: var(--accent);
+}
+
+.volume.active .effect-icon svg path,
+.volume.active .effect-icon svg rect,
+.volume.active .effect-icon svg line,
+.volume.active .effect-icon svg circle {
+    opacity: 1;
+    fill: var(--accent);
+    stroke: var(--accent);
+}
+
+.badge-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Contenitore per posizionamento relativo del popover */
+.slider-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Popover verticale */
+.slider-popover {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    
+    width: 60px;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 50;
+}
+
+.badge-popover {
+    position: absolute;
+    top: 100%;
+    margin-top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 50;
+}
+
+.badge-popover.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Badge con il valore in dB */
+.limiter-val-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: monospace;
+    color: var(--accent);
+    background: rgba(255, 77, 109, 0.15);
+    border: 1px solid rgba(255, 77, 109, 0.3);
+    border-radius: 6px;
+    padding: 3px 6px;
+    text-align: center;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+}
+
+.norm-val-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: monospace;
+    width: 100%;
+    color: var(--accent);
+    background: rgba(255, 77, 109, 0.15);
+    border: 1px solid rgba(255, 77, 109, 0.3);
+    border-radius: 6px;
+    padding: 3px 6px;
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: auto !important;
+    user-select: text !important; 
+    -webkit-user-select: text !important;
+    cursor: text;
+}
+
+/* BOX CHE DEFINISCE L'ALTEZZA DELLO SLIDER (es. 120px) */
+.slider-track-box {
+    position: relative;
+    width: 24px;
+    height: 120px; /* Cambia questo valore se lo vuoi ancora più alto! */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SLIDER RUOTATO A -90° CHE OCCUPA IL 100% DELL'ALTEZZA DEL BOX */
+.vertical-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    
+    position: absolute;
+    width: 120px !important; /* Stessa dimensione dell'altezza di .slider-track-box */
+    height: 8px; /* Spessore ben visibile della barra */
+    
+    transform: rotate(-90deg);
+    transform-origin: center;
+    
+    background: var(--wave-base);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* PALLINO ROSA (THUMB) BELLO GRANDE (20px) */
+.vertical-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.6);
+    transition: transform 0.15s ease;
+}
+
+.vertical-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+}
+
+.vertical-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.6);
+}
+
+/* Mostra il popover in hover o focus */
+.slider-wrapper:hover .slider-popover,
+.slider-wrapper:focus-within .slider-popover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-12px);
+}
+
+/* PLAY BUTTON SPECIAL */
+.play {
+  color: var(--accent);
+}
+
+.play:hover {
+  color: var(--accent-soft);
+}
+
+.repeat-svg.active, .backward-svg.active {
+    color: var(--accent);
+}
+.audio-player {
+    background-color: var(--surface);
+    width: 700px;
+    border: 1px solid rgba(255,255,255,0.04); 
+    border-radius: 10px;
+}
+
+/* Player Fluttuante (Floating) */
+.audio-player.floating-player {
+    /* Posizionamento fisso in fondo alla schermata */
+    position: fixed;
+    bottom: 20px;            /* Distanza dal bordo inferiore */
+    left: 50%;
+    transform: translateX(-50%); /* Centra perfettamente il player */
+    
+    /* Dimensioni e Forma */
+    width: calc(100% - 40px); /* Larghezza dinamica con margini laterali */
+    max-width: 600px;        /* Larghezza massima consigliata */
+    border-radius: 16px;     /* Angoli molto arrotondati */
+    
+    /* Sfondo scuro semitrasparente stile Glassmorphism */
+    background: rgba(24, 24, 27, 0.85); 
+    backdrop-filter: blur(12px); /* Effetto sfocatura di sfondo */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Bordino sottile lucido */
+    
+    /* Ombra pronunciata per far sollevare il player */
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5),
+                0 8px 10px -6px rgba(0, 0, 0, 0.3);
+                
+    /* Per stare sempre sopra agli altri elementi della pagina */
+    z-index: 1000; 
+}
+
+/* IMPORTANTE: Margine di cortesia in fondo al body */
+/* Evita che il player fluttuante copra il contenuto in fondo alla pagina quando scatti fino in fondo */
+body {
+    padding-bottom: 90px;
+}
+
+/* TIME */
+.time {
+    color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.audio-selected-name {
+    color: var(--muted);
+}
+
+.volume input {
+    accent-color: var(--accent);
+    padding: 12px;  
+    border: none;
+}
+
+.app-modal {
+    background: var(--surface);
+    border: 1px solid var(--panel);
+    border-radius: 18px;
+    color: var(--text);
+    overflow: hidden;
+}
+
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 1.5rem 1.5rem 0.8rem;
+}
+
+
+.modal-title {
+    color: var(--text);
+    font-weight: 600;
+}
+
+
+.modal-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(239,68,68,0.15);
+    color: var(--accent);
+
+    font-size: 1.2rem;
+}
+
+
+.modal-body {
+    padding: 1rem 1.5rem;
+}
+
+
+.modal-text {
+    color: var(--text);
+    margin-bottom: .5rem;
+}
+
+
+.modal-subtext {
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+
+.modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+    gap: .75rem;
+}
+
+
+.modal-cancel {
+    background: var(--panel);
+    color: var(--text);
+    border: none;
+    border-radius: 10px;
+    padding: .6rem 1.2rem;
+}
+
+
+.modal-cancel:hover {
+    background: var(--wave-base);
+    color: var(--text);
+}
+
+
+.modal-danger {
+    background: var(--accent);  
+    color: white;
+    border: none;   
+    border-radius: 10px;
+    padding: .6rem 1.2rem;
+}
+
+
+.modal-danger:hover {
+    filter: brightness(1.1);
+}

@@ -15,7 +15,7 @@ function openDB() {
     });
 }
 
-async function saveAudio(audio) {
+export async function saveAudio(audio) {
     const db = await openDB();
 
     return new Promise((resolve, reject) => {
@@ -30,7 +30,7 @@ async function saveAudio(audio) {
     });
 }
 
-async function getAudio() {
+export async function getAudio() {
     const db = await openDB();
 
     return new Promise((resolve, reject) => {
@@ -44,7 +44,7 @@ async function getAudio() {
     });
 }
 
-async function deleteAudio() {
+export async function deleteAudio() {
     const db = await openDB();
 
     return new Promise((resolve, reject) => {

@@ -1,3 +1,5 @@
+import { saveAudio } from './db.js';
+
 const returnBtn = document.querySelector('.return');
 const deleteRecModal = new bootstrap.Modal(document.getElementById('deleteRecModal'));
 const recordContainer = document.querySelector('.record-container');
@@ -102,18 +104,22 @@ function drawLiveBars() {
     const svg = document.querySelector('#waveform svg');
     svg.replaceChildren();
 
+    svg.setAttribute("viewBox", `0 0 ${WIDTH} ${HEIGHT}`);
+    svg.setAttribute("preserveAspectRatio", "none");
+
     const step = WIDTH / LIVE_BARS;
     const center = HEIGHT / 2;
 
     liveWave.forEach((value, i) => {
-        const top = center - (value.max * center);
-        const bottom = center - (value.min * center);
+        const height = Math.max(2, (value.max - value.min) * center);
+        const top = center - (height / 2);
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
 
         rect.setAttribute( "x", i * step);
         rect.setAttribute("y", top);
         rect.setAttribute("width", step * .8);
-        rect.setAttribute("height", Math.max(2, bottom - top));
+        rect.setAttribute("height", height);
+        rect.setAttribute("rx", (step * 0.8) / 2);
         rect.setAttribute("fill", "var(--text)");
 
         svg.appendChild(rect);
@@ -135,8 +141,9 @@ function stopRecording() {
 }
 
 async function saveRecording() {
-    const blob = new Blob(chunks, { type: "audio/webm" });
-    await saveAudio(blob);
+    //const blob = new Blob(chunks, { type: "audio/webm" });
+    const audio = new File(chunks, 'rec', { type: "audio/webm" })
+    await saveAudio(audio);
     window.location = 'player.html';
 }
 
