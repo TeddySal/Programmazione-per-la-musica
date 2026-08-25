@@ -24,6 +24,7 @@ let waves = {
 let currentMode = 'original';
 let progress = 0;
 let duration = 0;
+
 let effects = [
     { type: "normalizer", enabled: true, options: { peak: -5 } },
     { type: "compressor", enabled: false, options: { threshold: -24, ratio: 4, knee: 30, attack: 0.003, release: 0.25 } },
@@ -37,6 +38,7 @@ let effects = [
     { type: "gain", enabled: true, options: { gain: 1 }},
     { type: "limiter", enabled: true, options: { threshold: 0 } }
 ];
+
 let track = null;
 let isPlaying = false;
 let isRepeating = false;
@@ -1228,6 +1230,7 @@ function showEq3Options() {
             </div>
 
             <div class="fx-control">
+            <!--
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 260" width="100%">
                     <path id="eq-curve" 
                           d="M 50,130 L 120,130 C 160,130 180,130 220,130 L 290,130 C 330,130 350,130 390,130 L 460,130" 
@@ -1237,6 +1240,7 @@ function showEq3Options() {
                           stroke-linecap="round"
                           style="transition: d 0.08s ease-out;" />
                 </svg>
+                -->
             </div>
 
             <div class="fx-control mb-3">

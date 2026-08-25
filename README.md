@@ -3,6 +3,7 @@
 ## Avvio dell'applicazione
 
 ### Prerequisiti
+
 - Browser moderno (Chrome, Firefox, Opera, Safari)
 - VS Code + Live Server oppure Python 3
 
@@ -29,4 +30,3 @@ Successivamente aprire il browser e visitare:
     http://localhost:8000
 
 È possibile sostituire `8000` con una porta diversa se necessario.
-
