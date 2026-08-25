@@ -1523,7 +1523,7 @@ function makeDistorsionCurve(drive, mode = "overdrive") {
 
 async function loadImpulseResponse(ir = "Large Long Echo Hall.wav") {
     try {
-        const res = await fetch('/IR/'+ir);
+        const res = await fetch('./IR/'+encodeURIComponent(ir));
         const arrayBuffer = await res.arrayBuffer();
         const decodedBuffer = await audioCtx.decodeAudioData(arrayBuffer);
         await updateEffect("reverb", "buffer", decodedBuffer);
